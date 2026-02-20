@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Configuration Files (SENSITIVE - DO NOT COMMIT)
+cognito_config.json
+memory_config.json
+gateway_config.json
+gateway_role_config.json
+lambda_config.json
+runtime_config.json
+runtime_execution_role_config.json
+
+# Keep kb_config.json as it's from CloudFormation and not sensitive
+# kb_config.json can be committed if needed
+
+# AWS
+.aws/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local

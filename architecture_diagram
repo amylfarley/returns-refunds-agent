@@ -1,0 +1,145 @@
+digraph "Returns & Refunds Agent - Complete Architecture" {
+	graph [bgcolor=white fontcolor="#2D3436" fontname="Sans-Serif" fontsize=14 label="Returns & Refunds Agent - Complete Architecture" nodesep=0.8 pad=0.5 rankdir=TB ranksep=1.0 splines=ortho]
+	node [fixedsize=true fontcolor="#2D3436" fontname="Sans-Serif" fontsize=12 height=1.2 imagescale=true labelloc=b shape=box style=rounded width=1.2]
+	edge [color="#7B8894" fontsize=10]
+	e0e27937de0c451bbb4d1b161d521a37 [label="Customer
+(user_001)" height=2.3 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/database/database.png" shape=none]
+	subgraph "cluster_Strands Agent
+(full_featured_returns_agent)" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="Strands Agent
+(full_featured_returns_agent)" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		a3ab3eb4968d402cb1b6a3b91efdb4ab [label="Returns Agent
+
+Memory + Gateway
++ Knowledge Base
++ Custom Tools" height=3.5 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/ml/bedrock.png" shape=none]
+		subgraph "cluster_Built-in Tools" {
+			graph [bgcolor="#EBF3E7" fontname="Sans-Serif" fontsize=12 label="Built-in Tools" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+			cd4a0bca01af4594a584d714c1604595 [label=current_time height=1.9 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/compute/lambda.png" shape=none]
+			"452a317778494e81bbf73a5f9c7362fe" [label=retrieve height=1.9 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/compute/lambda.png" shape=none]
+		}
+		subgraph "cluster_Custom Tools" {
+			graph [bgcolor="#EBF3E7" fontname="Sans-Serif" fontsize=12 label="Custom Tools" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+			"296370db17274ba2b4ff5b6e6f860f94" [label="check_return
+_eligibility" height=2.3 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/compute/lambda.png" shape=none]
+			dcc2a1d17c9640a5a1d7043135d74fc7 [label="calculate
+_refund_amount" height=2.3 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/compute/lambda.png" shape=none]
+			"6e155060ee654f2bbf15852e62ef0eec" [label="format_policy
+_response" height=2.3 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/compute/lambda.png" shape=none]
+		}
+	}
+	subgraph "cluster_AgentCore Memory
+(returns_refunds_memory-p7dffNC0ha)" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="AgentCore Memory
+(returns_refunds_memory-p7dffNC0ha)" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		b1d6b7533d2a4db2a18349da51aa45ce [label="Memory Service" height=1.9 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/database/database.png" shape=none]
+		subgraph "cluster_Memory Namespaces" {
+			graph [bgcolor="#EBF3E7" fontname="Sans-Serif" fontsize=12 label="Memory Namespaces" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+			"65a1b55a17d943818ffa84288b410873" [label="Preferences
+app/{actorId}/
+preferences" height=2.7 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/storage/simple-storage-service-s3.png" shape=none]
+			"243f35e382c94002b7b513d61e7f5d66" [label="Semantic
+app/{actorId}/
+semantic" height=2.7 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/storage/simple-storage-service-s3.png" shape=none]
+			"2a81d3c282004301bd9e5ad9208390ac" [label="Summary
+app/{actorId}/
+{sessionId}/summary" height=2.7 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/storage/simple-storage-service-s3.png" shape=none]
+		}
+	}
+	subgraph "cluster_Knowledge Base
+(XWCNYZDEGT)" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="Knowledge Base
+(XWCNYZDEGT)" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		"39bf721de9f549459bed55cb2863e264" [label="Bedrock
+Knowledge Base
+
+Amazon Return
+Policies" height=3.5 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/database/database.png" shape=none]
+	}
+	subgraph "cluster_AgentCore Gateway
+(returnsrefundsgateway-q6skfjrtth)" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="AgentCore Gateway
+(returnsrefundsgateway-q6skfjrtth)" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		subgraph cluster_Authentication {
+			graph [bgcolor="#EBF3E7" fontname="Sans-Serif" fontsize=12 label=Authentication labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+			"3e44e228b28044b691df417ab0383d60" [label="Cognito
+User Pool
+
+us-west-2_jblrQsfU3
+
+OAuth2 Client
+Credentials" height=4.300000000000001 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/security/cognito.png" shape=none]
+		}
+		a71cb76c0b2c4b32bcc2a9a9a5a1617a [label="MCP Gateway
+
+Protocol: MCP
+Auth: JWT" height=3.1 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/integration/simple-notification-service-sns.png" shape=none]
+		subgraph cluster_IAM {
+			graph [bgcolor="#EBF3E7" fontname="Sans-Serif" fontsize=12 label=IAM labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+			"1b11383337df4d02823a8f002869e034" [label="Gateway Role
+
+Lambda Invoke
+Permissions" height=3.1 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/security/identity-and-access-management-iam.png" shape=none]
+		}
+		subgraph "cluster_Gateway Targets" {
+			graph [bgcolor="#EBF3E7" fontname="Sans-Serif" fontsize=12 label="Gateway Targets" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+			"832e1ec09c0f4b81a88aa67aaf14cf9e" [label="OrderLookup
+Target
+
+lookup_order" height=3.1 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/compute/lambda.png" shape=none]
+		}
+	}
+	subgraph "cluster_Lambda Function
+(OrderLookupFunction)" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="Lambda Function
+(OrderLookupFunction)" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		"1f813b82ac484d90be558fb8c427de7c" [label="Order Lookup
+Lambda
+
+Python 3.12" height=3.1 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/compute/lambda.png" shape=none]
+		subgraph "cluster_Mock Order Database" {
+			graph [bgcolor="#EBF3E7" fontname="Sans-Serif" fontsize=12 label="Mock Order Database" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+			ce2bfefdc99b46e8b06d162d115afd3f [label="ORD-001
+Laptop
+$1,299.99
+✓ Eligible" height=3.1 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/database/database.png" shape=none]
+			"0dbd79e5e7fb44c2ac0bbe6511e66748" [label="ORD-002
+iPhone
+$799.99
+✗ Not Eligible" height=3.1 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/database/database.png" shape=none]
+			"3d6f6076d6614d95a19019ecfc5b4d2d" [label="ORD-003
+Tablet
+$449.99
+✓ Eligible" height=3.1 image="/home/workshop/Project/.venv/lib/python3.12/site-packages/resources/aws/database/database.png" shape=none]
+		}
+	}
+	e0e27937de0c451bbb4d1b161d521a37 -> a3ab3eb4968d402cb1b6a3b91efdb4ab [label="Query:
+Look up ORD-001" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	a3ab3eb4968d402cb1b6a3b91efdb4ab -> b1d6b7533d2a4db2a18349da51aa45ce [label="Retrieve
+Preferences" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	b1d6b7533d2a4db2a18349da51aa45ce -> "65a1b55a17d943818ffa84288b410873" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	b1d6b7533d2a4db2a18349da51aa45ce -> "243f35e382c94002b7b513d61e7f5d66" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	b1d6b7533d2a4db2a18349da51aa45ce -> "2a81d3c282004301bd9e5ad9208390ac" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	a3ab3eb4968d402cb1b6a3b91efdb4ab -> "39bf721de9f549459bed55cb2863e264" [label="Search
+Policies" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	a3ab3eb4968d402cb1b6a3b91efdb4ab -> "3e44e228b28044b691df417ab0383d60" [label="Request
+Access Token" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"3e44e228b28044b691df417ab0383d60" -> a3ab3eb4968d402cb1b6a3b91efdb4ab [label="JWT Token" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	a3ab3eb4968d402cb1b6a3b91efdb4ab -> a71cb76c0b2c4b32bcc2a9a9a5a1617a [label="lookup_order
+(ORD-001)" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	a71cb76c0b2c4b32bcc2a9a9a5a1617a -> "1b11383337df4d02823a8f002869e034" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	a71cb76c0b2c4b32bcc2a9a9a5a1617a -> "832e1ec09c0f4b81a88aa67aaf14cf9e" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"832e1ec09c0f4b81a88aa67aaf14cf9e" -> "1f813b82ac484d90be558fb8c427de7c" [label=Invoke dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"1f813b82ac484d90be558fb8c427de7c" -> ce2bfefdc99b46e8b06d162d115afd3f [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"1f813b82ac484d90be558fb8c427de7c" -> "0dbd79e5e7fb44c2ac0bbe6511e66748" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"1f813b82ac484d90be558fb8c427de7c" -> "3d6f6076d6614d95a19019ecfc5b4d2d" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"1f813b82ac484d90be558fb8c427de7c" -> "832e1ec09c0f4b81a88aa67aaf14cf9e" [label="Order Details
++ Eligibility" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13 style=dashed]
+	"832e1ec09c0f4b81a88aa67aaf14cf9e" -> a71cb76c0b2c4b32bcc2a9a9a5a1617a [label=Response dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13 style=dashed]
+	a71cb76c0b2c4b32bcc2a9a9a5a1617a -> a3ab3eb4968d402cb1b6a3b91efdb4ab [label="Tool Result" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13 style=dashed]
+	a3ab3eb4968d402cb1b6a3b91efdb4ab -> "296370db17274ba2b4ff5b6e6f860f94" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	a3ab3eb4968d402cb1b6a3b91efdb4ab -> dcc2a1d17c9640a5a1d7043135d74fc7 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	a3ab3eb4968d402cb1b6a3b91efdb4ab -> "6e155060ee654f2bbf15852e62ef0eec" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	a3ab3eb4968d402cb1b6a3b91efdb4ab -> e0e27937de0c451bbb4d1b161d521a37 [label="Personalized
+Response" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13 style=bold]
+}

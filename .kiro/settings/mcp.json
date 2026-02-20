@@ -1,0 +1,56 @@
+{
+  "mcpServers": {
+    "aws-bedrock-agentcore": {
+      "command": "python3",
+      "args": [
+        "agentcore-mcp-server/server.py"
+      ],
+      "env": {
+        "PYTHONUNBUFFERED": "1",
+        "AWS_PROFILE": "workshop-profile"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "generate_strands_agent",
+        "agentcore_memory_create",
+        "agentcore_memory_create_event",
+        "agentcore_memory_retrieve",
+        "agentcore_gateway_create",
+        "agentcore_gateway_add_lambda_target",
+        "agentcore_gateway_list_targets"
+      ]
+    },
+    "strands-agents": {
+      "command": "uvx",
+      "args": [
+        "strands-agents-mcp-server@latest"
+      ],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "timeout": 60,
+      "autoApprove": [
+        "search_docs",
+        "fetch_doc"
+      ]
+    },
+    "bedrock-agentcore-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "awslabs.amazon-bedrock-agentcore-mcp-server@latest"
+      ],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "timeout": 60,
+      "type": "stdio",
+      "autoApprove": [
+        "search_agentcore_docs",
+        "fetch_agentcore_doc",
+        "manage_agentcore_gateway"
+      ]
+    }
+  }
+}
