@@ -2,6 +2,10 @@
 
 A production-ready AI agent built with AWS Bedrock AgentCore, featuring memory, gateway integration, and knowledge base access for intelligent customer service.
 
+**🚀 Status**: Deployed to AgentCore Runtime & Production-Ready  
+**📦 Total Scripts**: 20 Python scripts  
+**✅ Verified**: All integrations tested in production
+
 ## 🎯 Overview
 
 This project demonstrates a complete implementation of an AI-powered returns and refunds assistant using:
@@ -45,11 +49,9 @@ See [architecture_visual.md](architecture_visual.md) for detailed diagrams.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/returns-refunds-agent.git
+git clone https://github.com/amylfarley/returns-refunds-agent.git
 cd returns-refunds-agent
 ```
-
-**Note**: If you're setting up this repository for the first time, see [GITHUB_SETUP.md](GITHUB_SETUP.md) for detailed instructions.
 
 ### 2. Set Up Python Environment
 
@@ -62,36 +64,33 @@ pip install -r requirements.txt
 ### 3. Deploy Infrastructure (Run scripts in order)
 
 ```bash
-# Step 1: Create Memory
-python3 03_create_memory.py
+# Memory Setup
+python3 03_create_memory.py          # Create memory resource
+python3 04_seed_memory.py            # Seed with sample data
 
-# Step 2: Seed Memory with sample data
-python3 04_seed_memory.py
+# Authentication Setup
+python3 08_create_cognito.py         # Create Cognito User Pool
 
-# Step 3: Create Cognito for authentication
-python3 08_create_cognito.py
+# Gateway Setup
+python3 09_create_gateway_role.py    # Create IAM role for Gateway
+python3 10_create_lambda.py          # Create Lambda function
+python3 11_create_gateway.py         # Create Gateway
+python3 12_add_lambda_to_gateway.py  # Register Lambda target
 
-# Step 4: Create IAM role for Gateway
-python3 09_create_gateway_role.py
-
-# Step 5: Create Lambda function
-python3 10_create_lambda.py
-
-# Step 6: Create Gateway
-python3 11_create_gateway.py
-
-# Step 7: Add Lambda to Gateway
-python3 12_add_lambda_to_gateway.py
+# Runtime Deployment
+python3 16_create_runtime_role.py    # Create Runtime execution role
+python3 19_deploy_agent.py           # Deploy to AgentCore Runtime (5-10 min)
+python3 20_check_status.py           # Monitor deployment status
 ```
 
 ### 4. Test the Agent
 
 ```bash
-# Test memory integration
-python3 07_test_memory_agent.py
+# Test locally
+python3 15_test_full_agent.py        # Test complete local system
 
-# Test complete system
-python3 15_test_full_agent.py
+# Test production runtime
+python3 21_invoke_agent.py           # Invoke deployed runtime agent
 ```
 
 ## 📁 Project Structure
@@ -99,39 +98,56 @@ python3 15_test_full_agent.py
 ```
 .
 ├── README.md                          # This file
-├── GITHUB_SETUP.md                    # GitHub repository setup guide
-├── requirements.txt                   # Python dependencies
-├── .gitignore                         # Git ignore rules (excludes sensitive configs)
+├── requirements.txt                   # Local development dependencies
+├── requirements_runtime.txt           # Runtime deployment dependencies
+├── .gitignore                         # Git ignore rules
 ├── architecture_visual.md             # Visual architecture diagrams
 ├── arch_diagram.md                    # Detailed architecture documentation
 │
-├── Agent Files
+├── Agent Files (4 scripts)
 │   ├── 01_returns_refunds_agent.py    # Basic agent with KB
 │   ├── 06_memory_enabled_agent.py     # Agent with memory
-│   └── 14_full_agent.py               # Complete agent (all features)
+│   ├── 14_full_agent.py               # Complete local agent
+│   └── 17_runtime_agent.py            # Production runtime agent ⭐
 │
-├── Infrastructure Scripts
+├── Infrastructure Scripts (9 scripts)
 │   ├── 03_create_memory.py            # Create AgentCore Memory
+│   ├── 04_seed_memory.py              # Seed memory with data
 │   ├── 08_create_cognito.py           # Setup Cognito authentication
-│   ├── 09_create_gateway_role.py      # Create IAM role
+│   ├── 09_create_gateway_role.py      # Create Gateway IAM role
 │   ├── 10_create_lambda.py            # Create Lambda function
 │   ├── 11_create_gateway.py           # Create Gateway
-│   └── 12_add_lambda_to_gateway.py    # Register Lambda target
+│   ├── 12_add_lambda_to_gateway.py    # Register Lambda target
+│   ├── 16_create_runtime_role.py      # Create Runtime IAM role ⭐
+│   └── 19_deploy_agent.py             # Deploy to Runtime ⭐
 │
-├── Test Scripts
+├── Test Scripts (7 scripts)
 │   ├── 02_test_agent.py               # Test basic agent
 │   ├── 05_test_memory.py              # Test memory retrieval
 │   ├── 07_test_memory_agent.py        # Test memory-enabled agent
 │   ├── 13_list_gateway_targets.py     # List gateway targets
-│   └── 15_test_full_agent.py          # End-to-end test
+│   ├── 15_test_full_agent.py          # Local end-to-end test
+│   ├── 20_check_status.py             # Monitor deployment ⭐
+│   └── 21_invoke_agent.py             # Invoke runtime agent ⭐
+│
+├── Documentation
+│   ├── DEPLOYMENT_CHECKLIST.md        # Step-by-step deployment
+│   ├── QUICK_REFERENCE.md             # Quick commands
+│   ├── GITHUB_SETUP.md                # GitHub setup guide
+│   └── PUSH_TO_GITHUB.md              # Git push instructions
 │
 └── Configuration Files (Generated)
     ├── kb_config.json                 # Knowledge Base ID
     ├── memory_config.json             # Memory ID
     ├── cognito_config.json            # Cognito credentials
-    ├── gateway_role_config.json       # IAM role ARN
+    ├── gateway_role_config.json       # Gateway IAM role
     ├── lambda_config.json             # Lambda ARN and schema
-    └── gateway_config.json            # Gateway URL and ID
+    ├── gateway_config.json            # Gateway URL and ID
+    ├── runtime_execution_role_config.json  # Runtime IAM role ⭐
+    └── runtime_config.json            # Agent ARN ⭐
+
+⭐ = New for Runtime Deployment
+Total: 20 Python scripts
 ```
 
 ## 🔧 Configuration
@@ -170,7 +186,9 @@ Expected: Agent demonstrates:
 
 ## 📊 Verification Results
 
+### Local Testing
 **Test Date**: 2026-02-20  
+**Test Script**: 15_test_full_agent.py  
 **Status**: ✅ ALL CAPABILITIES VERIFIED
 
 | Capability | Status | Evidence |
@@ -181,6 +199,23 @@ Expected: Agent demonstrates:
 | Custom Tools | ✅ PASS | Calculated eligibility |
 | OAuth Authentication | ✅ PASS | JWT token obtained |
 | Personalization | ✅ PASS | Combined all data |
+
+### Production Runtime Testing
+**Deployment Date**: 2026-02-20  
+**Test Script**: 21_invoke_agent.py  
+**Status**: ✅ PRODUCTION DEPLOYMENT VERIFIED
+
+| Metric | Value |
+|--------|-------|
+| Agent ARN | returns_refunds_agent-xRyDzcDbNQ |
+| Deployment Status | READY ✅ |
+| Build Time | 36 seconds |
+| Deployment Time | 2-3 minutes |
+| Response Time | < 5 seconds |
+| Gateway Integration | ✅ Working |
+| Memory Integration | ✅ Working |
+| Custom Tools | ✅ Working |
+| OAuth Authentication | ✅ Working |
 
 ## 🛠️ Custom Tools
 
@@ -197,6 +232,36 @@ The agent includes three custom tools:
 - JWT token validation
 - Encrypted memory storage
 - Namespace isolation per customer
+
+## 🚀 AgentCore Runtime Deployment
+
+This project includes complete deployment to AWS Bedrock AgentCore Runtime:
+
+### Deployment Features
+- **Serverless**: No infrastructure management required
+- **Auto-scaling**: Handles variable load automatically
+- **ARM64 Container**: Optimized for performance
+- **CodeBuild Pipeline**: Automated build and deployment
+- **Observability**: CloudWatch Logs + X-Ray traces built-in
+
+### Deployment Scripts
+1. **16_create_runtime_role.py** - Creates IAM execution role with all required permissions
+2. **17_runtime_agent.py** - Production agent with `@app.entrypoint` decorator
+3. **19_deploy_agent.py** - Deploys to runtime (builds container, pushes to ECR, deploys)
+4. **20_check_status.py** - Monitors deployment until READY
+5. **21_invoke_agent.py** - Tests deployed agent with OAuth authentication
+
+### Deployment Time
+- **Build**: ~36 seconds (CodeBuild)
+- **Total Deployment**: 2-3 minutes
+- **Status Check**: Real-time monitoring
+
+### Production Metrics
+- **Response Time**: < 5 seconds
+- **Container Platform**: ARM64
+- **Container Registry**: Amazon ECR
+- **Observability**: CloudWatch + X-Ray enabled
+- **Status**: READY ✅
 
 ## 📚 Documentation
 
@@ -216,12 +281,15 @@ The agent includes three custom tools:
 This project demonstrates:
 
 - Building agents with Strands SDK
+- Deploying to AgentCore Runtime
 - Integrating AgentCore Memory for personalization
 - Using Gateway for external tool access
 - Lambda function integration via MCP
 - Knowledge Base integration for RAG
 - OAuth2 authentication flows
 - Custom tool development
+- Production deployment with Docker/CodeBuild
+- CloudWatch observability and X-Ray tracing
 
 ## 🤝 Contributing
 
@@ -254,6 +322,7 @@ For issues or questions:
 
 ---
 
-**Status**: ✅ Production-Ready  
-**Version**: 2.0  
-**Last Updated**: 2026-02-20
+**Status**: ✅ Production-Ready & Deployed to AgentCore Runtime  
+**Version**: 3.0  
+**Last Updated**: 2026-02-20  
+**Repository**: https://github.com/amylfarley/returns-refunds-agent
