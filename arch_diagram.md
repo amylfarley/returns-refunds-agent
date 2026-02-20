@@ -667,7 +667,11 @@ Step 4: Test Production Agent
 6. **20_check_status.py** - Monitor runtime deployment status
 7. **21_invoke_agent.py** - Invoke deployed runtime agent
 
-**Total**: 20 Python scripts
+### Monitoring Scripts (2 scripts)
+1. **22_monitor_agent.py** - Interactive monitoring dashboard with 7 options
+2. **23_get_logs_info.py** - Display CloudWatch log group info and CLI commands
+
+**Total**: 22 Python scripts
 
 ---
 
@@ -759,10 +763,11 @@ Step 4: Test Production Agent
 
 | Metric | Value |
 |--------|-------|
-| Total Scripts | 20 |
+| Total Scripts | 22 |
 | Infrastructure Scripts | 9 |
 | Agent Variants | 4 |
 | Test Scripts | 7 |
+| Monitoring Scripts | 2 |
 | AWS Resources Created | 8 |
 | Build Time | 36 seconds |
 | Deployment Time | 2-3 minutes |
@@ -772,6 +777,11 @@ Step 4: Test Production Agent
 ---
 
 ## Version History
+
+### Version 3.1 (2026-02-20)
+- ✅ Added monitoring tools (22_monitor_agent.py, 23_get_logs_info.py)
+- ✅ Created MONITORING_GUIDE.md documentation
+- ✅ 22 scripts total
 
 ### Version 3.0 (2026-02-20)
 - ✅ Deployed to AgentCore Runtime

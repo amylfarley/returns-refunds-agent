@@ -1,0 +1,7 @@
+{
+  "gateway_id": "yourgatewayname-abc123xyz",
+  "gateway_url": "https://yourgatewayname-abc123xyz.gateway.bedrock-agentcore.us-west-2.amazonaws.com",
+  "gateway_arn": "arn:aws:bedrock-agentcore:us-west-2:123456789012:gateway/yourgatewayname-abc123xyz",
+  "name": "YourGatewayName",
+  "region": "us-west-2"
+}

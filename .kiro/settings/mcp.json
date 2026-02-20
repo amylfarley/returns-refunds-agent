@@ -23,7 +23,8 @@
         "agentcore_runtime_configure",
         "agentcore_runtime_launch",
         "agentcore_runtime_status",
-        "agentcore_runtime_invoke"
+        "agentcore_runtime_invoke",
+        "agentcore_observability_get_logs_info"
       ]
     },
     "strands-agents": {

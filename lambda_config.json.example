@@ -1,0 +1,24 @@
+{
+  "function_arn": "arn:aws:lambda:us-west-2:123456789012:function:OrderLookupFunction",
+  "function_name": "OrderLookupFunction",
+  "tool_name": "lookup_order",
+  "tool_schema": [
+    {
+      "name": "lookup_order",
+      "description": "Look up order details by order ID. Returns order information including product name, purchase date, amount, and return eligibility status.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "string",
+            "description": "The order ID to look up (e.g., ORD-001)"
+          }
+        },
+        "required": [
+          "order_id"
+        ]
+      }
+    }
+  ],
+  "region": "us-west-2"
+}

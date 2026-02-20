@@ -3,8 +3,9 @@
 A production-ready AI agent built with AWS Bedrock AgentCore, featuring memory, gateway integration, and knowledge base access for intelligent customer service.
 
 **🚀 Status**: Deployed to AgentCore Runtime & Production-Ready  
-**📦 Total Scripts**: 20 Python scripts  
-**✅ Verified**: All integrations tested in production
+**📦 Total Scripts**: 22 Python scripts  
+**✅ Verified**: All integrations tested in production  
+**📊 Monitoring**: CloudWatch Logs + X-Ray + Interactive Dashboard
 
 ## 🎯 Overview
 
@@ -93,6 +94,18 @@ python3 15_test_full_agent.py        # Test complete local system
 python3 21_invoke_agent.py           # Invoke deployed runtime agent
 ```
 
+### 5. Monitor the Agent
+
+```bash
+# Interactive monitoring dashboard
+python3 22_monitor_agent.py          # 7 monitoring options
+
+# Get CloudWatch logs info
+python3 23_get_logs_info.py          # Log group and CLI commands
+```
+
+See [MONITORING_GUIDE.md](MONITORING_GUIDE.md) for comprehensive monitoring documentation.
+
 ## 📁 Project Structure
 
 ```
@@ -130,11 +143,16 @@ python3 21_invoke_agent.py           # Invoke deployed runtime agent
 │   ├── 20_check_status.py             # Monitor deployment ⭐
 │   └── 21_invoke_agent.py             # Invoke runtime agent ⭐
 │
+├── Monitoring Scripts (2 scripts)
+│   ├── 22_monitor_agent.py            # Interactive monitoring dashboard ⭐
+│   └── 23_get_logs_info.py            # CloudWatch logs info ⭐
+│
 ├── Documentation
 │   ├── DEPLOYMENT_CHECKLIST.md        # Step-by-step deployment
 │   ├── QUICK_REFERENCE.md             # Quick commands
 │   ├── GITHUB_SETUP.md                # GitHub setup guide
-│   └── PUSH_TO_GITHUB.md              # Git push instructions
+│   ├── PUSH_TO_GITHUB.md              # Git push instructions
+│   └── MONITORING_GUIDE.md            # Monitoring documentation ⭐
 │
 └── Configuration Files (Generated)
     ├── kb_config.json                 # Knowledge Base ID
@@ -147,7 +165,7 @@ python3 21_invoke_agent.py           # Invoke deployed runtime agent
     └── runtime_config.json            # Agent ARN ⭐
 
 ⭐ = New for Runtime Deployment
-Total: 20 Python scripts
+Total: 22 Python scripts
 ```
 
 ## 🔧 Configuration
@@ -251,6 +269,17 @@ This project includes complete deployment to AWS Bedrock AgentCore Runtime:
 4. **20_check_status.py** - Monitors deployment until READY
 5. **21_invoke_agent.py** - Tests deployed agent with OAuth authentication
 
+### Monitoring Scripts
+1. **22_monitor_agent.py** - Interactive monitoring dashboard with 7 options:
+   - View recent logs
+   - Filter logs by pattern
+   - Get GenAI dashboard URL
+   - View X-Ray traces
+   - Check agent status
+   - Get log statistics
+   - Tail logs in real-time
+2. **23_get_logs_info.py** - Displays CloudWatch log group info and AWS CLI commands
+
 ### Deployment Time
 - **Build**: ~36 seconds (CodeBuild)
 - **Total Deployment**: 2-3 minutes
@@ -261,13 +290,49 @@ This project includes complete deployment to AWS Bedrock AgentCore Runtime:
 - **Container Platform**: ARM64
 - **Container Registry**: Amazon ECR
 - **Observability**: CloudWatch + X-Ray enabled
+- **Monitoring Tools**: Interactive dashboard + CLI commands
 - **Status**: READY ✅
+
+## 📊 Monitoring & Observability
+
+### CloudWatch Logs
+All agent invocations, tool calls, and errors are logged to CloudWatch:
+- **Log Group**: `/aws/bedrock-agentcore/runtimes/returns_refunds_agent-xRyDzcDbNQ-DEFAULT`
+- **Access**: AWS Console, AWS CLI, or monitoring scripts
+
+### X-Ray Traces
+Distributed tracing enabled for request flow analysis:
+- **Service Map**: Visualize agent → tools → services
+- **Trace Analysis**: Identify bottlenecks and latency
+- **Access**: AWS X-Ray Console
+
+### GenAI Observability Dashboard
+AWS CloudWatch GenAI dashboard provides:
+- Request count and success rate
+- Response latency metrics
+- Token usage tracking
+- Error rate monitoring
+
+### Monitoring Tools
+```bash
+# Interactive monitoring dashboard
+python3 22_monitor_agent.py
+
+# Get log group info and CLI commands
+python3 23_get_logs_info.py
+
+# Tail logs in real-time
+aws logs tail /aws/bedrock-agentcore/runtimes/returns_refunds_agent-xRyDzcDbNQ-DEFAULT --follow --region us-west-2
+```
+
+See [MONITORING_GUIDE.md](MONITORING_GUIDE.md) for complete monitoring documentation.
 
 ## 📚 Documentation
 
 ### Project Documentation
 - [Quick Reference](QUICK_REFERENCE.md) - Essential commands and information
 - [Deployment Checklist](DEPLOYMENT_CHECKLIST.md) - Step-by-step deployment guide
+- [Monitoring Guide](MONITORING_GUIDE.md) - Comprehensive monitoring documentation
 - [GitHub Setup Guide](GITHUB_SETUP.md) - Instructions for creating GitHub repository
 - [Architecture Diagrams](architecture_visual.md) - Visual system architecture
 - [Technical Documentation](arch_diagram.md) - Detailed component specs
@@ -290,6 +355,8 @@ This project demonstrates:
 - Custom tool development
 - Production deployment with Docker/CodeBuild
 - CloudWatch observability and X-Ray tracing
+- Interactive monitoring dashboards
+- Production troubleshooting and debugging
 
 ## 🤝 Contributing
 
@@ -317,12 +384,13 @@ Built with:
 
 For issues or questions:
 - Review the [architecture documentation](arch_diagram.md)
+- Check the [monitoring guide](MONITORING_GUIDE.md) for troubleshooting
 - Check the [test scripts](15_test_full_agent.py) for examples
 - Consult [Strands documentation](https://strandsagents.com)
 
 ---
 
 **Status**: ✅ Production-Ready & Deployed to AgentCore Runtime  
-**Version**: 3.0  
+**Version**: 3.1  
 **Last Updated**: 2026-02-20  
 **Repository**: https://github.com/amylfarley/returns-refunds-agent

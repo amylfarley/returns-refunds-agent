@@ -1,0 +1,25 @@
+{
+  "role_arn": "arn:aws:iam::123456789012:role/AgentCoreRuntimeExecutionRole-1234567890",
+  "role_name": "AgentCoreRuntimeExecutionRole-1234567890",
+  "policy_arn": "arn:aws:iam::123456789012:policy/AgentCoreRuntimeExecutionPolicy-0987654321",
+  "policy_name": "AgentCoreRuntimeExecutionPolicy-0987654321",
+  "region": "us-west-2",
+  "permissions": [
+    "bedrock:InvokeModel",
+    "bedrock:InvokeModelWithResponseStream",
+    "bedrock-agentcore:GetMemory",
+    "bedrock-agentcore:CreateEvent",
+    "bedrock-agentcore:RetrieveMemory",
+    "bedrock-agent:Retrieve",
+    "bedrock-agentcore:InvokeGateway",
+    "logs:CreateLogGroup",
+    "logs:CreateLogStream",
+    "logs:PutLogEvents",
+    "xray:PutTraceSegments",
+    "xray:PutTelemetryRecords",
+    "ecr:GetAuthorizationToken",
+    "ecr:BatchCheckLayerAvailability",
+    "ecr:GetDownloadUrlForLayer",
+    "ecr:BatchGetImage"
+  ]
+}

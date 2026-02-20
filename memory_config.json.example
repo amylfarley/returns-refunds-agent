@@ -1,0 +1,31 @@
+{
+  "memory_id": "your_memory_name-ABC123XYZ",
+  "name": "your_memory_name",
+  "region": "us-west-2",
+  "strategies": [
+    {
+      "summaryMemoryStrategy": {
+        "name": "summary",
+        "namespaces": [
+          "app/{actorId}/{sessionId}/summary"
+        ]
+      }
+    },
+    {
+      "userPreferenceMemoryStrategy": {
+        "name": "preferences",
+        "namespaces": [
+          "app/{actorId}/preferences"
+        ]
+      }
+    },
+    {
+      "semanticMemoryStrategy": {
+        "name": "semantic",
+        "namespaces": [
+          "app/{actorId}/semantic"
+        ]
+      }
+    }
+  ]
+}

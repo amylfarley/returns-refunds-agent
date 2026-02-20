@@ -1,0 +1,10 @@
+{
+  "agent_arn": "arn:aws:bedrock-agentcore:us-west-2:123456789012:runtime/your_agent_name-ABC123XYZ",
+  "agent_name": "your_agent_name",
+  "agent_id": "your_agent_name-ABC123XYZ",
+  "status": "READY",
+  "region": "us-west-2",
+  "deployment_date": "2026-02-20T20:48:58Z",
+  "container_image": "123456789012.dkr.ecr.us-west-2.amazonaws.com/your-agent:20260220-204858-527",
+  "log_group": "/aws/bedrock-agentcore/runtimes/your_agent_name-ABC123XYZ-DEFAULT"
+}

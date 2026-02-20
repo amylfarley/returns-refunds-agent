@@ -53,6 +53,45 @@ Use this checklist to deploy the Returns & Refunds Agent from scratch.
 - [ ] Test: `python3 13_list_gateway_targets.py`
 - [ ] Verify: OrderLookup target shows status READY
 
+## ✅ Runtime Deployment (Production)
+
+### Step 7: Runtime IAM Role Setup
+- [ ] Run: `python3 16_create_runtime_role.py`
+- [ ] Verify: `runtime_execution_role_config.json` created with role ARN
+- [ ] Note: Role has permissions for Bedrock, Memory, Gateway, KB, CloudWatch, X-Ray, ECR
+
+### Step 8: Deploy to AgentCore Runtime
+- [ ] Run: `python3 19_deploy_agent.py`
+- [ ] Wait: 5-10 minutes for CodeBuild to build and deploy container
+- [ ] Monitor: `python3 20_check_status.py` (checks every 10 seconds)
+- [ ] Verify: Agent status shows READY
+- [ ] Verify: `runtime_config.json` created with agent ARN
+
+### Step 9: Test Production Agent
+- [ ] Run: `python3 21_invoke_agent.py`
+- [ ] Verify: ✅ OAuth authentication successful
+- [ ] Verify: ✅ Gateway integration working (order lookup)
+- [ ] Verify: ✅ Return eligibility calculated
+- [ ] Verify: ✅ Response time < 5 seconds
+- [ ] Verify: ✅ All integrations working in production
+
+## ✅ Monitoring Setup
+
+### Step 10: Configure Monitoring
+- [ ] Run: `python3 23_get_logs_info.py`
+- [ ] Note: CloudWatch log group name
+- [ ] Note: AWS CLI commands for log access
+- [ ] Bookmark: GenAI Observability Dashboard URL
+- [ ] Bookmark: X-Ray Service Map URL
+
+### Step 11: Test Monitoring Tools
+- [ ] Run: `python3 22_monitor_agent.py`
+- [ ] Test: Option 1 - View recent logs
+- [ ] Test: Option 3 - Get GenAI dashboard URL
+- [ ] Test: Option 5 - Check agent status
+- [ ] Verify: All monitoring options working
+- [ ] Review: MONITORING_GUIDE.md for detailed documentation
+
 ## ✅ Testing
 
 ### Basic Agent Test
@@ -83,6 +122,8 @@ After successful deployment, you should have:
 - [ ] `gateway_role_config.json` - IAM role ARN
 - [ ] `lambda_config.json` - Lambda function details
 - [ ] `gateway_config.json` - Gateway endpoint
+- [ ] `runtime_execution_role_config.json` - Runtime IAM role ARN
+- [ ] `runtime_config.json` - Agent ARN and deployment details
 
 **⚠️ SECURITY**: These files contain sensitive information and are excluded from Git via `.gitignore`.
 
@@ -115,7 +156,11 @@ aws cognito-idp describe-user-pool \
 ### End-to-End Test
 
 ```bash
+# Local testing
 python3 15_test_full_agent.py
+
+# Production runtime testing
+python3 21_invoke_agent.py
 ```
 
 Expected output should show:
@@ -124,11 +169,34 @@ Expected output should show:
 - Return eligibility calculation (15 days remaining)
 - Personalized response combining all data
 
+### Monitoring Verification
+
+```bash
+# Get log information
+python3 23_get_logs_info.py
+
+# Interactive monitoring
+python3 22_monitor_agent.py
+
+# Tail logs in real-time
+aws logs tail /aws/bedrock-agentcore/runtimes/returns_refunds_agent-xRyDzcDbNQ-DEFAULT --follow --region us-west-2
+```
+
 ## ✅ Cleanup (Optional)
 
 To remove all deployed resources:
 
 ```bash
+# Delete Runtime Agent
+python3 -c "
+import boto3, json
+with open('runtime_config.json') as f:
+    runtime = json.load(f)
+agent_id = runtime['agent_arn'].split('/')[-1]
+client = boto3.client('bedrock-agentcore-control', region_name='us-west-2')
+client.delete_agent_runtime(agentRuntimeId=agent_id)
+"
+
 # Delete Gateway Target
 python3 -c "
 import boto3, json
@@ -154,14 +222,27 @@ client.delete_gateway(gatewayIdentifier=gw['gateway_id'])
 # Delete Lambda
 aws lambda delete-function --function-name OrderLookupFunction --region us-west-2
 
-# Delete IAM Role
+# Delete Runtime IAM Role
+python3 -c "
+import boto3, json
+with open('runtime_execution_role_config.json') as f:
+    role = json.load(f)
+role_name = role['role_arn'].split('/')[-1]
+iam = boto3.client('iam')
+policies = iam.list_attached_role_policies(RoleName=role_name)
+for p in policies['AttachedPolicies']:
+    iam.detach_role_policy(RoleName=role_name, PolicyArn=p['PolicyArn'])
+    iam.delete_policy(PolicyArn=p['PolicyArn'])
+iam.delete_role(RoleName=role_name)
+"
+
+# Delete Gateway IAM Role
 python3 -c "
 import boto3, json
 with open('gateway_role_config.json') as f:
     role = json.load(f)
 role_name = role['role_arn'].split('/')[-1]
 iam = boto3.client('iam')
-# Detach policies first
 policies = iam.list_attached_role_policies(RoleName=role_name)
 for p in policies['AttachedPolicies']:
     iam.detach_role_policy(RoleName=role_name, PolicyArn=p['PolicyArn'])
@@ -191,7 +272,8 @@ client.delete_user_pool(UserPoolId=cog['user_pool_id'])
 
 # Remove config files
 rm -f memory_config.json cognito_config.json gateway_role_config.json
-rm -f lambda_config.json gateway_config.json
+rm -f lambda_config.json gateway_config.json runtime_execution_role_config.json
+rm -f runtime_config.json
 ```
 
 ## 📊 Deployment Summary
@@ -201,23 +283,31 @@ rm -f lambda_config.json gateway_config.json
 | Memory | 03_create_memory.py | memory_config.json | ⬜ |
 | Memory Seed | 04_seed_memory.py | - | ⬜ |
 | Cognito | 08_create_cognito.py | cognito_config.json | ⬜ |
-| IAM Role | 09_create_gateway_role.py | gateway_role_config.json | ⬜ |
+| Gateway IAM Role | 09_create_gateway_role.py | gateway_role_config.json | ⬜ |
 | Lambda | 10_create_lambda.py | lambda_config.json | ⬜ |
 | Gateway | 11_create_gateway.py | gateway_config.json | ⬜ |
 | Gateway Target | 12_add_lambda_to_gateway.py | - | ⬜ |
+| Runtime IAM Role | 16_create_runtime_role.py | runtime_execution_role_config.json | ⬜ |
+| Runtime Deployment | 19_deploy_agent.py | runtime_config.json | ⬜ |
+| Runtime Test | 21_invoke_agent.py | - | ⬜ |
+| Monitoring Setup | 23_get_logs_info.py | - | ⬜ |
 
 ## 🎯 Success Criteria
 
 Deployment is successful when:
 
-1. ✅ All 6 configuration files are created
+1. ✅ All 8 configuration files are created
 2. ✅ Memory test shows preference recall
 3. ✅ Gateway target shows READY status
 4. ✅ Full agent test passes all verifications
-5. ✅ No errors in any deployment script
+5. ✅ Runtime agent status shows READY
+6. ✅ Production test passes with < 5 second response time
+7. ✅ Monitoring tools display logs and metrics
+8. ✅ No errors in any deployment script
 
 ---
 
-**Estimated Deployment Time**: 10-15 minutes  
+**Estimated Deployment Time**: 20-30 minutes (including runtime build)  
 **Region**: us-west-2  
-**Cost**: Minimal (mostly serverless, pay-per-use)
+**Cost**: Minimal (mostly serverless, pay-per-use)  
+**Total Scripts**: 22 Python scripts

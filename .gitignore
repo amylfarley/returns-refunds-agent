@@ -38,6 +38,7 @@ env/
 Thumbs.db
 
 # Configuration Files (SENSITIVE - DO NOT COMMIT)
+# Actual config files are excluded, but .example files are safe to commit
 cognito_config.json
 memory_config.json
 gateway_config.json
@@ -45,6 +46,9 @@ gateway_role_config.json
 lambda_config.json
 runtime_config.json
 runtime_execution_role_config.json
+
+# Example config files are safe to commit (*.example files are allowed)
+# These help users understand the structure without exposing sensitive data
 
 # Keep kb_config.json as it's from CloudFormation and not sensitive
 # kb_config.json can be committed if needed

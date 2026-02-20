@@ -1,0 +1,10 @@
+{
+  "user_pool_id": "us-west-2_XXXXXXXXX",
+  "user_pool_arn": "arn:aws:cognito-idp:us-west-2:123456789012:userpool/us-west-2_XXXXXXXXX",
+  "domain_prefix": "your-gateway-domain-12345678",
+  "client_id": "1a2b3c4d5e6f7g8h9i0j1k2l3m",
+  "client_secret": "your-client-secret-here-do-not-commit",
+  "token_endpoint": "https://your-gateway-domain-12345678.auth.us-west-2.amazoncognito.com/oauth2/token",
+  "discovery_url": "https://cognito-idp.us-west-2.amazonaws.com/us-west-2_XXXXXXXXX/.well-known/openid-configuration",
+  "region": "us-west-2"
+}

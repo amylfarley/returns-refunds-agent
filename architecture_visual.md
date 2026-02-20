@@ -604,6 +604,10 @@ returns-refunds-agent/
 │   ├── 20_check_status.py               # Monitor deployment ⭐
 │   └── 21_invoke_agent.py               # Invoke runtime agent ⭐
 │
+├── Monitoring Scripts (2)
+│   ├── 22_monitor_agent.py              # Interactive monitoring dashboard ⭐
+│   └── 23_get_logs_info.py              # CloudWatch logs info ⭐
+│
 ├── Configuration Files (Generated)
 │   ├── kb_config.json                   # Knowledge Base ID
 │   ├── memory_config.json               # Memory ID
@@ -621,7 +625,8 @@ returns-refunds-agent/
 │   ├── DEPLOYMENT_CHECKLIST.md          # Deployment guide
 │   ├── GITHUB_SETUP.md                  # GitHub setup
 │   ├── QUICK_REFERENCE.md               # Quick commands
-│   └── PUSH_TO_GITHUB.md                # Git push instructions
+│   ├── PUSH_TO_GITHUB.md                # Git push instructions
+│   └── MONITORING_GUIDE.md              # Monitoring documentation ⭐
 │
 └── Dependencies
     ├── requirements.txt                 # Local development
@@ -644,6 +649,7 @@ returns-refunds-agent/
 
 | Metric | Value |
 |--------|-------|
+| Total Scripts | 22 |
 | Build Time | 36 seconds |
 | Deployment Time | 2-3 minutes |
 | Container Platform | ARM64 |
@@ -668,6 +674,10 @@ returns-refunds-agent/
 - **X-Ray Traces**: Distributed tracing enabled
 - **GenAI Dashboard**: Available in AWS Console
 - **Metrics**: Request count, latency, success rate, token usage
+- **Monitoring Tools**: 
+  - `22_monitor_agent.py` - Interactive monitoring with 7 options
+  - `23_get_logs_info.py` - CloudWatch log group info and CLI commands
+  - `MONITORING_GUIDE.md` - Comprehensive monitoring documentation
 
 ---
 
@@ -694,6 +704,6 @@ returns-refunds-agent/
 
 ---
 
-**Version**: 3.0  
-**Status**: ✅ PRODUCTION DEPLOYMENT COMPLETE  
+**Version**: 3.1  
+**Status**: ✅ PRODUCTION DEPLOYMENT COMPLETE WITH MONITORING  
 **Last Updated**: 2026-02-20

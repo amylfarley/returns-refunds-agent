@@ -25,6 +25,20 @@ python3 11_create_gateway.py         # Create gateway
 python3 12_add_lambda_to_gateway.py  # Register Lambda target
 ```
 
+### Deploy to Runtime (Production)
+```bash
+python3 16_create_runtime_role.py    # Create runtime IAM role
+python3 19_deploy_agent.py           # Deploy to AgentCore Runtime (5-10 min)
+python3 20_check_status.py           # Monitor deployment status
+python3 21_invoke_agent.py           # Test production agent
+```
+
+### Monitoring
+```bash
+python3 22_monitor_agent.py          # Interactive monitoring dashboard
+python3 23_get_logs_info.py          # Get CloudWatch logs info
+```
+
 ### Test
 ```bash
 python3 02_test_agent.py             # Test basic agent
@@ -42,9 +56,12 @@ python3 13_list_gateway_targets.py   # List gateway targets
 
 | File | Purpose |
 |------|---------|
-| `14_full_agent.py` | Complete agent with all features |
+| `17_runtime_agent.py` | Production runtime agent (with @app.entrypoint) |
+| `14_full_agent.py` | Complete local agent with all features |
 | `01_returns_refunds_agent.py` | Basic agent with KB only |
 | `06_memory_enabled_agent.py` | Agent with memory integration |
+| `22_monitor_agent.py` | Interactive monitoring dashboard |
+| `23_get_logs_info.py` | CloudWatch logs information |
 
 ## 🔧 Configuration Files (Auto-Generated)
 
@@ -55,7 +72,9 @@ python3 13_list_gateway_targets.py   # List gateway targets
 | `cognito_config.json` | Auth credentials | ⚠️ YES |
 | `gateway_config.json` | Gateway URL/ID | No |
 | `lambda_config.json` | Lambda ARN | No |
-| `gateway_role_config.json` | IAM role ARN | No |
+| `gateway_role_config.json` | Gateway IAM role ARN | No |
+| `runtime_execution_role_config.json` | Runtime IAM role ARN | No |
+| `runtime_config.json` | Agent ARN | No |
 
 **Note**: Sensitive files are excluded from Git via `.gitignore`.
 
@@ -107,11 +126,12 @@ headers = {"Authorization": f"Bearer {token}"}
 
 | Resource | Name/ID | Region |
 |----------|---------|--------|
-| Memory | returns_refunds_memory-* | us-west-2 |
+| Memory | returns_refunds_memory-p7dffNC0ha | us-west-2 |
 | Knowledge Base | XWCNYZDEGT | us-west-2 |
 | Lambda | OrderLookupFunction | us-west-2 |
-| Gateway | returnsrefundsgateway-* | us-west-2 |
-| Cognito Pool | us-west-2_* | us-west-2 |
+| Gateway | returnsrefundsgateway-q6skfjrtth | us-west-2 |
+| Cognito Pool | us-west-2_jblrQsfU3 | us-west-2 |
+| Runtime Agent | returns_refunds_agent-xRyDzcDbNQ | us-west-2 |
 | Model | claude-sonnet-4-5 | us-west-2 |
 
 ## 🧪 Test Queries
@@ -162,6 +182,44 @@ aws bedrock-agentcore-control get-gateway \
 aws lambda get-function \
   --function-name OrderLookupFunction \
   --region us-west-2
+
+# Runtime agent status
+python3 20_check_status.py
+```
+
+### View Logs
+```bash
+# Interactive monitoring
+python3 22_monitor_agent.py
+
+# Get log group info
+python3 23_get_logs_info.py
+
+# Tail logs in real-time
+aws logs tail /aws/bedrock-agentcore/runtimes/returns_refunds_agent-xRyDzcDbNQ-DEFAULT \
+  --follow --region us-west-2
+
+# View recent logs (last hour)
+aws logs tail /aws/bedrock-agentcore/runtimes/returns_refunds_agent-xRyDzcDbNQ-DEFAULT \
+  --since 1h --region us-west-2
+
+# Filter for errors
+aws logs filter-log-events \
+  --log-group-name /aws/bedrock-agentcore/runtimes/returns_refunds_agent-xRyDzcDbNQ-DEFAULT \
+  --filter-pattern "ERROR" \
+  --region us-west-2
+```
+
+### Observability Dashboards
+```bash
+# GenAI Observability Dashboard
+https://console.aws.amazon.com/cloudwatch/home?region=us-west-2#gen-ai-observability/agent-core
+
+# X-Ray Service Map
+https://console.aws.amazon.com/xray/home?region=us-west-2#/service-map
+
+# CloudWatch Logs
+https://console.aws.amazon.com/cloudwatch/home?region=us-west-2#logsV2:log-groups
 ```
 
 ### Common Issues
@@ -172,11 +230,15 @@ aws lambda get-function \
 | "Gateway authentication failed" | Check `cognito_config.json` credentials |
 | "Lambda not found" | Run `10_create_lambda.py` |
 | "Target not ready" | Wait 30 seconds, check with `13_list_gateway_targets.py` |
+| "Runtime deployment failed" | Check `20_check_status.py` for error details |
+| "Agent not responding" | Check CloudWatch logs with `22_monitor_agent.py` |
+| "No logs visible" | Wait 1-2 minutes after invocation, then check again |
 
 ## 📚 Documentation
 
 - [README.md](README.md) - Complete project documentation
 - [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md) - Step-by-step deployment
+- [MONITORING_GUIDE.md](MONITORING_GUIDE.md) - Monitoring and observability
 - [GITHUB_SETUP.md](GITHUB_SETUP.md) - GitHub repository setup
 - [architecture_visual.md](architecture_visual.md) - Architecture diagrams
 - [arch_diagram.md](arch_diagram.md) - Technical specifications
@@ -191,14 +253,19 @@ aws lambda get-function \
 | Refund Calculation | ✅ | 02_test_agent.py |
 | Policy Retrieval | ✅ | 02_test_agent.py |
 | OAuth Authentication | ✅ | 15_test_full_agent.py |
+| Runtime Deployment | ✅ | 21_invoke_agent.py |
+| CloudWatch Monitoring | ✅ | 22_monitor_agent.py |
 
 ## 💡 Tips
 
 1. **Always activate venv**: `source .venv/bin/activate`
-2. **Run scripts in order**: Follow the numbered sequence (03, 04, 08, 09, 10, 11, 12)
+2. **Run scripts in order**: Follow the numbered sequence (03, 04, 08, 09, 10, 11, 12, 16, 19)
 3. **Wait for memory**: After seeding, wait 30 seconds for processing
 4. **Check configs**: Verify JSON files are created after each script
-5. **Test incrementally**: Test after each major component (memory, gateway, full)
+5. **Test incrementally**: Test after each major component (memory, gateway, full, runtime)
+6. **Monitor deployment**: Use `20_check_status.py` to track runtime deployment progress
+7. **Use monitoring tools**: `22_monitor_agent.py` provides interactive dashboard for logs
+8. **Check logs regularly**: CloudWatch logs help troubleshoot issues quickly
 
 ## 🔗 Useful Links
 
@@ -210,5 +277,7 @@ aws lambda get-function \
 ---
 
 **Quick Start**: See [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md)  
+**Monitoring**: See [MONITORING_GUIDE.md](MONITORING_GUIDE.md)  
 **GitHub Setup**: See [GITHUB_SETUP.md](GITHUB_SETUP.md)  
-**Full Docs**: See [README.md](README.md)
+**Full Docs**: See [README.md](README.md)  
+**Total Scripts**: 22 Python scripts
