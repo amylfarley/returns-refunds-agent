@@ -1,0 +1,66 @@
+default_agent: returns_refunds_agent
+agents:
+  returns_refunds_agent:
+    name: returns_refunds_agent
+    language: python
+    node_version: null
+    entrypoint: /home/workshop/Project/17_runtime_agent.py
+    deployment_type: container
+    runtime_type: null
+    platform: linux/arm64
+    container_runtime: docker
+    source_path: null
+    aws:
+      execution_role: arn:aws:iam::652492146510:role/AgentCoreRuntimeExecutionRole-1771620201
+      execution_role_auto_create: false
+      account: '652492146510'
+      region: us-west-2
+      ecr_repository: null
+      ecr_auto_create: true
+      s3_path: null
+      s3_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+        network_mode_config: null
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+      lifecycle_configuration:
+        idle_runtime_session_timeout: null
+        max_lifetime: null
+    bedrock_agentcore:
+      agent_id: returns_refunds_agent-xRyDzcDbNQ
+      agent_arn: arn:aws:bedrock-agentcore:us-west-2:652492146510:runtime/returns_refunds_agent-xRyDzcDbNQ
+      agent_session_id: 099b505c-5b47-48b2-a52b-f6041c96db94
+    codebuild:
+      project_name: null
+      execution_role: null
+      source_bucket: null
+    memory:
+      mode: NO_MEMORY
+      memory_id: null
+      memory_arn: null
+      memory_name: null
+      event_expiry_days: 30
+      first_invoke_memory_check_done: false
+      was_created_by_toolkit: false
+    identity:
+      credential_providers: []
+      workload: null
+    aws_jwt:
+      enabled: false
+      audiences: []
+      signing_algorithm: ES384
+      issuer_url: null
+      duration_seconds: 300
+    authorizer_configuration:
+      customJWTAuthorizer:
+        allowedClients:
+        - 11bume6elgce1vh08q6j8v0vkh
+        discoveryUrl: https://cognito-idp.us-west-2.amazonaws.com/us-west-2_jblrQsfU3/.well-known/openid-configuration
+    request_header_configuration: null
+    oauth_configuration: null
+    api_key_env_var_name: null
+    api_key_credential_provider_name: null
+    is_generated_by_agentcore_create: false

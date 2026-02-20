@@ -1,0 +1,22 @@
+# Core Strands Dependencies
+strands-agents>=0.1.0
+strands-agents-tools>=0.1.0
+
+# AgentCore Runtime
+bedrock-agentcore>=0.1.0
+
+# AWS SDK
+boto3>=1.34.0
+botocore>=1.34.0
+
+# MCP (Model Context Protocol)
+mcp>=0.1.0
+
+# HTTP Client
+requests>=2.31.0
+
+# Standard library (included with Python, listed for reference)
+# - json
+# - os
+# - traceback
+# - datetime

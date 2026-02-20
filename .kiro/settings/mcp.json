@@ -17,7 +17,13 @@
         "agentcore_memory_retrieve",
         "agentcore_gateway_create",
         "agentcore_gateway_add_lambda_target",
-        "agentcore_gateway_list_targets"
+        "agentcore_gateway_list_targets",
+        "agentcore_create_runtime_execution_role_script",
+        "generate_agentcore_runtime_agent",
+        "agentcore_runtime_configure",
+        "agentcore_runtime_launch",
+        "agentcore_runtime_status",
+        "agentcore_runtime_invoke"
       ]
     },
     "strands-agents": {
